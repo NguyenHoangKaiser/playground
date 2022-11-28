@@ -8,7 +8,7 @@ interface ITodo {
 }
 
 const todosApi = axios.create({
-  baseURL: "http://localhost:3500",
+  baseURL: "http://localhost:3500", // npx json-server -w data/db.json -p 3500
 });
 
 export const getTodos = async (): Promise<ITodo[]> => {
