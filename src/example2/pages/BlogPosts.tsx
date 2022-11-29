@@ -11,12 +11,19 @@ const customQuery = () => ({
 
 function BlogPostsPage() {
   // const initialData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const { data } = useQuery(customQuery());
+  const { data } = useQuery({
+    queryKey: ["blogPosts"],
+    queryFn: getPosts,
+  });
 
   return (
     <>
       <h1>Our Blog Posts</h1>
-      <Posts blogPosts={data} />
+      {data ? (
+        <Posts blogPosts={data} />
+      ) : (
+        <p className="text-center">Not found posts</p>
+      )}
     </>
   );
 }

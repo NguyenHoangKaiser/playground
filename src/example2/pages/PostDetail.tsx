@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { TQueryClient } from "../App3";
 
 const customQuery = (postId: string) => ({
-  queryKey: ["blogPostDetail"],
+  queryKey: ["blogPostDetail", postId],
   queryFn: async () => {
     const data = await getPost(postId);
     if (data) {
