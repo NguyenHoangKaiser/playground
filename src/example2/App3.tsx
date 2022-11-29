@@ -16,6 +16,7 @@ import WelcomePage from "./pages/Welcome";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import TodoList from "src/features/TodoList";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
         path: "/blog/new",
         element: <NewPostPage />,
         action: newPostAction,
+      },
+      {
+        path: "/note",
+        element: <TodoList />,
       },
     ],
   },

@@ -31,6 +31,19 @@ function MainNavigation() {
               Blog
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/note"
+              className={({ isActive }) =>
+                `text-lg no-underline hover:text-[#fcb66b] ${
+                  isActive ? "text-[#fcb66b]" : undefined
+                }`
+              }
+              end
+            >
+              Note
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>
