@@ -48,7 +48,7 @@ const router = createBrowserRouter([
           {
             path: ":id",
             element: <PostDetailPage />,
-            loader: blogPostDetailLoader,
+            loader: blogPostDetailLoader(queryClient),
           },
         ],
       },

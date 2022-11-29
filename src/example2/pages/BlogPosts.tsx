@@ -4,17 +4,14 @@ import { getPosts } from "../util/api";
 import { TQueryClient } from "../App3";
 import { useQuery } from "@tanstack/react-query";
 
-export const customQuery = () => ({
+const customQuery = () => ({
   queryKey: ["blogPosts"],
   queryFn: getPosts,
 });
 
 function BlogPostsPage() {
   // const initialData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const { data } = useQuery({
-    queryKey: ["blogPosts"],
-    queryFn: getPosts,
-  });
+  const { data } = useQuery(customQuery());
 
   return (
     <>
@@ -23,8 +20,6 @@ function BlogPostsPage() {
     </>
   );
 }
-
-export default BlogPostsPage;
 
 export const loader = (queryClient: TQueryClient) => {
   return async () => {
@@ -35,6 +30,8 @@ export const loader = (queryClient: TQueryClient) => {
     );
   };
 };
+
+export default BlogPostsPage;
 
 // export function loader(queryClient: TQueryClient) {
 //   // return (
