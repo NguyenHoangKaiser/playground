@@ -17,9 +17,6 @@ function TodoList() {
   } = useQuery({
     queryKey: ["todos"],
     queryFn: getTodos,
-    // select(data) {
-    //   return data.sort((a, b) => b.id - a.id);
-    // },
   });
 
   const updateTodoMutation = useMutation({
