@@ -31,7 +31,7 @@ function MainNavigation() {
               Blog
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               to="/note"
               className={({ isActive }) =>
@@ -42,6 +42,19 @@ function MainNavigation() {
               end
             >
               Note
+            </NavLink>
+          </li> */}
+          <li>
+            <NavLink
+              to="/redux"
+              className={({ isActive }) =>
+                `text-lg no-underline hover:text-[#fcb66b] ${
+                  isActive ? "text-[#fcb66b]" : undefined
+                }`
+              }
+              end
+            >
+              Redux
             </NavLink>
           </li>
         </ul>

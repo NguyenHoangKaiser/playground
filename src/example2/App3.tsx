@@ -2,9 +2,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import BlogLayout from "./pages/BlogLayout";
 import BlogPostsPage, { loader as blogPostsLoader } from "./pages/BlogPosts";
-import DeferredBlogPostsPage, {
-  loader as deferredBlogPostsLoader,
-} from "./pages/DeferredBlogPosts";
+// import DeferredBlogPostsPage, {
+//   loader as deferredBlogPostsLoader,
+// } from "./pages/DeferredBlogPosts";
 import ErrorPage from "./pages/Error";
 import NewPostPage, { action as newPostAction } from "./pages/NewPost";
 import { action as newsletterAction } from "./pages/Newsletter";
@@ -16,7 +16,9 @@ import WelcomePage from "./pages/Welcome";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import TodoList from "src/features/TodoList";
+import ReduxPage from "src/example3/ReduxPage";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "src/example3/store/store";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,9 +60,13 @@ const router = createBrowserRouter([
         element: <NewPostPage />,
         action: newPostAction,
       },
+      // {
+      //   path: "/note",
+      //   element: <TodoList />,
+      // },
       {
-        path: "/note",
-        element: <TodoList />,
+        path: "/redux",
+        element: <ReduxPage />,
       },
     ],
   },
@@ -73,10 +79,12 @@ const router = createBrowserRouter([
 function App3() {
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen />
-      </QueryClientProvider>
+      <ReduxProvider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen />
+        </QueryClientProvider>
+      </ReduxProvider>
     </>
   );
 }
