@@ -19,6 +19,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReduxPage from "src/example3/ReduxPage";
 import { Provider as ReduxProvider } from "react-redux";
 import store from "src/example3/store/store";
+import { fetchUsers } from "src/example3/features/users/usersSlice";
+
+store.dispatch(fetchUsers());
 
 const queryClient = new QueryClient({
   defaultOptions: {

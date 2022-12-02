@@ -1,44 +1,46 @@
 import { useSelectorTyped } from "src/example3/store/reduxHook";
-import { selectAllPosts } from "./postsSlice";
+import {
+  selectAllPosts,
+  getPostsStatus,
+  getPostsError,
+  fetchPosts,
+} from "./postsSlice";
 import { selectAllUsers } from "../users/usersSlice";
-import TimeAgo from "./TimeAgo";
-import ReactionButton from "./ReactionButton";
+
+import { useDispatchTyped } from "src/example3/store/reduxHook";
+import { useEffect } from "react";
+import PostsExcerpt from "./PostsExcerpt";
 
 export default function PostsList() {
+  const dispatch = useDispatchTyped();
   const posts = useSelectorTyped(selectAllPosts);
-  const orderedPosts = posts
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date));
+  const postStatus = useSelectorTyped(getPostsStatus);
+  const error = useSelectorTyped(getPostsError);
 
-  const renderedPosts = orderedPosts.map((post) => (
-    <article
-      className="rounded block p-4 bg-[#343232] w-80 hover:bg-[#665a4d] text-white"
-      key={post.id}
-    >
-      <div className="grid grid-cols-2 text-sm">
-        <Author userID={post.userId} />
-        <TimeAgo timestamp={post.date} />
-      </div>
-      <h3 className="text-lg font-semibold">{post.title}</h3>
-      <p className="post-content">{post.content.substring(0, 100)}</p>
-      <ReactionButton post={post} />
-    </article>
-  ));
+  useEffect(() => {
+    if (postStatus === "idle") {
+      dispatch(fetchPosts());
+    }
+  }, [postStatus, dispatch]);
+
+  let content;
+  if (postStatus === "loading") {
+    content = <div className="loader">Loading...</div>;
+  } else if (postStatus === "succeeded") {
+    const orderedPosts = posts
+      .slice()
+      .sort((a, b) => b.date.localeCompare(a.date));
+    content = orderedPosts.map((post) => (
+      <PostsExcerpt key={post.id} post={post} />
+    ));
+  } else if (postStatus === "failed") {
+    content = <div>{error}</div>;
+  }
 
   return (
     <section className="flex-container flex-col">
       <h2 className="text-lg font-semibold">Posts</h2>
-      {renderedPosts}
+      {content}
     </section>
   );
 }
-
-const Author = ({ userID }: { userID: string }) => {
-  const users = useSelectorTyped(selectAllUsers);
-  const author = users.find((user) => user.id === userID);
-  return (
-    <p className="italic">{`Author: ${
-      author ? author.name : "Unknown author"
-    }`}</p>
-  );
-};

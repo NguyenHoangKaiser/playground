@@ -1,39 +1,47 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "src/example3/store/store";
+import axios from "axios";
 
 export interface IUser {
   id: string;
   name: string;
 }
 
+const USERS_URL = "http://localhost:3500/users";
+
+export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
+  try {
+    const response = await axios.get<IUser[]>(USERS_URL);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(`Error when get users: ${error.message}`);
+      throw {
+        message: `Failed to fetch users, ${error.message}`,
+        status: 500,
+      };
+    } else {
+      console.log("unexpected error: ", error);
+      throw {
+        message: `Failed to fetch users: ${error}`,
+        status: 500,
+      };
+    }
+  }
+});
+
 export type UsersState = IUser[];
 
-const initialState: UsersState = [
-  { id: "12", name: "Hoang" },
-  { id: "13", name: "Nam" },
-  { id: "24", name: "Huy" },
-];
+const initialState: UsersState = [];
 
 export const usersSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    // postAdded: {
-    //   reducer(state, action: PayloadAction<IPost>) {
-    //     state.push(action.payload);
-    //   },
-    //   prepare({ title, content }: { title: string; content: string }) {
-    //     return {
-    //       payload: {
-    //         id: nanoid(),
-    //         title,
-    //         content,
-    //       },
-    //     };
-    //   },
-    // },
+  reducers: {},
+  extraReducers(builder) {
+    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      return action.payload;
+    });
   },
 });
 

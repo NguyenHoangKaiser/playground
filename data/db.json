@@ -48,5 +48,26 @@
       "title": "huyhoang",
       "completed": false
     }
+  ],
+  "posts": [
+    {
+      "userId": "24",
+      "id": "0",
+      "title": "Hello World",
+      "content": "Welcome to learning Redux!",
+      "date": "2022-12-02T06:38:43.142Z"
+    },
+    {
+      "userId": "12",
+      "id": "1",
+      "title": "Foo",
+      "content": "Bar",
+      "date": "2022-12-02T06:38:43.142Z"
+    }
+  ],
+  "users": [
+    { "id": "12", "name": "Hoang" },
+    { "id": "13", "name": "Nam" },
+    { "id": "24", "name": "Huy" }
   ]
 }
