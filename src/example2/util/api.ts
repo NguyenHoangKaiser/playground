@@ -23,8 +23,6 @@ const api = axios.create({
 // }
 
 export async function getPosts() {
-  await sleep(2000);
-
   try {
     const { data, status } = await api.get<TPostResponse>("/posts");
     console.log("response status is: ", status);

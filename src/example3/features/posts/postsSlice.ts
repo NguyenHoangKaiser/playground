@@ -1,13 +1,12 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "src/example3/store/store";
+import { sub } from "date-fns";
+import { IPost, TReaction } from "../types";
 
-export interface IPost {
-  id: string;
-  title: string;
-  content: string;
-  userId: string;
-}
+const day = () => {
+  return sub(new Date(), { minutes: 10 }).toISOString();
+};
 
 export type PostsState = IPost[];
 
@@ -17,9 +16,23 @@ const initialState: PostsState = [
     title: "Hello World",
     content: "Welcome to learning Redux!",
     userId: "24",
+    date: day(),
+    reaction: {
+      thumbsUp: 0,
+      wow: 0,
+      heart: 0,
+      rocket: 0,
+      coffee: 0,
+    },
   },
-  { id: "1", title: "Foo", content: "Bar", userId: "12" },
-  { id: "2", title: "Baz", content: "Qux", userId: "13" },
+  {
+    id: "1",
+    title: "Foo",
+    content: "Bar",
+    userId: "12",
+    date: day(),
+    reaction: { thumbsUp: 0, wow: 0, heart: 0, rocket: 0, coffee: 0 },
+  },
 ];
 
 export const postsSlice = createSlice({
@@ -46,9 +59,27 @@ export const postsSlice = createSlice({
             title,
             content,
             userId,
+            date: new Date().toISOString(),
+            reaction: {
+              thumbsUp: 0,
+              wow: 0,
+              heart: 0,
+              rocket: 0,
+              coffee: 0,
+            },
           },
         };
       },
+    },
+    reactionAdded(
+      state,
+      action: PayloadAction<{ postId: string; reaction: TReaction }>
+    ) {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.find((post) => post.id === postId);
+      if (existingPost) {
+        existingPost.reaction[reaction]++;
+      }
     },
   },
 });
@@ -60,6 +91,6 @@ export const postsSlice = createSlice({
  */
 export const selectAllPosts = (state: RootState) => state.posts;
 
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, reactionAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;
